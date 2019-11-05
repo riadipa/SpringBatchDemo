@@ -23,11 +23,13 @@ public class LoadController {
     @Autowired
     JobLauncher jobLauncher;
 
+    //autowiring by name qualifier(beanName="csvJob")
     @Autowired
-    Job jobFile;
+    Job csvJob;
 
+    //autowiring by name qualifier(beanName="mongoDbJob")
     @Autowired
-    Job jobDb;
+    Job mongoDbJob;
 
     @GetMapping(path = "/loadfilereader")
     public BatchStatus loadFile() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
@@ -35,7 +37,7 @@ public class LoadController {
         Map<String, JobParameter> maps = new HashMap<>();
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters parameters = new JobParameters(maps);
-        JobExecution jobExecution = jobLauncher.run(jobFile, parameters);
+        JobExecution jobExecution = jobLauncher.run(csvJob, parameters);
         System.out.println("Reading data from CSV file reader");
         System.out.println("Job Execution: " + jobExecution.getStatus());
         System.out.println("Batch is running...");
@@ -52,7 +54,7 @@ public class LoadController {
         Map<String, JobParameter> maps = new HashMap<>();
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters parameters = new JobParameters(maps);
-        JobExecution jobExecution = jobLauncher.run(jobDb, parameters);
+        JobExecution jobExecution = jobLauncher.run(mongoDbJob, parameters);
         System.out.println("Reading data from Mongo database");
         System.out.println("Job Execution: " + jobExecution.getStatus());
         System.out.println("Batch is running...");

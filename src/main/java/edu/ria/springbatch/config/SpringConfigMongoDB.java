@@ -11,7 +11,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemReader;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
@@ -23,18 +23,15 @@ import java.util.HashMap;
 @EnableBatchProcessing
 public class SpringConfigMongoDB {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
     @Bean
-    public Job job(JobBuilderFactory jobBuilderFactory,
-                   StepBuilderFactory stepBuilderFactory,
-                   ItemReader<Users> itemReader,
-                   ItemProcessor<Users, Users> itemProcessor,
-                   ItemWriter<Users> itemWriter
+    public Job mongoDbJob(JobBuilderFactory jobBuilderFactory,
+                          StepBuilderFactory stepBuilderFactory,
+                          @Qualifier("mongoDbItemReader") ItemReader<Users> itemReader,
+                          ItemProcessor<Users, Users> itemProcessor,
+                          ItemWriter<Users> itemWriter
     ) {
 
-        Step step = stepBuilderFactory.get("ETL-file-load")
+        Step step = stepBuilderFactory.get("ETL-data-load")
                 .<Users, Users>chunk(100)
                 .reader(itemReader)
                 .processor(itemProcessor)
@@ -48,10 +45,10 @@ public class SpringConfigMongoDB {
     }
 
     @Bean
-    public MongoItemReader<Users> itemReader(MongoTemplate mongoTemplate){
-        MongoItemReader<Users> itemReader= new MongoItemReader<>();
+    public MongoItemReader<Users> mongoDbItemReader(MongoTemplate mongoTemplate) {
+        MongoItemReader<Users> itemReader = new MongoItemReader<>();
         itemReader.setTemplate(mongoTemplate);
-        itemReader.setSort(new HashMap<String, Sort.Direction>(){{
+        itemReader.setSort(new HashMap<String, Sort.Direction>() {{
             put("_id", Sort.Direction.DESC);
         }});
         itemReader.setTargetType(Users.class);

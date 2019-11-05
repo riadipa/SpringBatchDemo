@@ -15,6 +15,7 @@ import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +26,11 @@ import org.springframework.core.io.Resource;
 public class SpringBatchConfigCsvFile {
 
     @Bean
-    public Job job(JobBuilderFactory jobBuilderFactory,
-                   StepBuilderFactory stepBuilderFactory,
-                   ItemReader<Users> itemReader,
-                   ItemProcessor<Users, Users> itemProcessor,
-                   ItemWriter<Users> itemWriter
+    public Job csvJob(JobBuilderFactory jobBuilderFactory,
+                      StepBuilderFactory stepBuilderFactory,
+                      @Qualifier("csvItemReader") ItemReader<Users> itemReader,
+                      ItemProcessor<Users, Users> itemProcessor,
+                      ItemWriter<Users> itemWriter
     ) {
 
         Step step = stepBuilderFactory.get("ETL-file-load")
@@ -46,7 +47,7 @@ public class SpringBatchConfigCsvFile {
     }
 
     @Bean
-    public FlatFileItemReader<Users> itemReader(@Value("${input}") Resource resource) {
+    public FlatFileItemReader<Users> csvItemReader(@Value("${input}") Resource resource) {
         FlatFileItemReader flatFileItemReader = new FlatFileItemReader();
         flatFileItemReader.setResource(resource);
         flatFileItemReader.setName("CSV-Reader");
