@@ -22,7 +22,7 @@ import org.springframework.core.io.Resource;
 
 @Configuration
 @EnableBatchProcessing
-public class SpringBatchConfig {
+public class SpringBatchConfigCsvFile {
 
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,

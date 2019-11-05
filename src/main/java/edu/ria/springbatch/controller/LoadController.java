@@ -24,15 +24,36 @@ public class LoadController {
     JobLauncher jobLauncher;
 
     @Autowired
-    Job job;
+    Job jobFile;
 
-    @GetMapping(path = "/load")
-    public BatchStatus load() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    @Autowired
+    Job jobDb;
+
+    @GetMapping(path = "/loadfilereader")
+    public BatchStatus loadFile() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         Map<String, JobParameter> maps = new HashMap<>();
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters parameters = new JobParameters(maps);
-        JobExecution jobExecution = jobLauncher.run(job, parameters);
+        JobExecution jobExecution = jobLauncher.run(jobFile, parameters);
+        System.out.println("Reading data from CSV file reader");
+        System.out.println("Job Execution: " + jobExecution.getStatus());
+        System.out.println("Batch is running...");
+
+        while (jobExecution.isRunning()) {
+            System.out.println("....");
+        }
+        return jobExecution.getStatus();
+    }
+
+    @GetMapping(path = "/loadmongodb")
+    public BatchStatus loadMongoDb() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+
+        Map<String, JobParameter> maps = new HashMap<>();
+        maps.put("time", new JobParameter(System.currentTimeMillis()));
+        JobParameters parameters = new JobParameters(maps);
+        JobExecution jobExecution = jobLauncher.run(jobDb, parameters);
+        System.out.println("Reading data from Mongo database");
         System.out.println("Job Execution: " + jobExecution.getStatus());
         System.out.println("Batch is running...");
 
