@@ -1,0 +1,49 @@
+version: '3.2'
+services:
+  batchpostgres:
+    image: postgres:10.4
+    ports:
+      - "15432:5432"
+    networks:
+      - batch-test-net
+    container_name: batchpostgres
+    command: postgres -N 500
+    environment:
+      - POSTGRES_USER=batchdb
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=batchdb
+
+  sourcepostgres:
+    image: postgres:10.4
+    ports:
+      - "25432:5432"
+    networks:
+      - batch-test-net
+    container_name: sourcepostgres
+    command: postgres -N 500
+    environment:
+      - POSTGRES_USER=sourcedb
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=sourcedb
+
+  targetpostgres:
+    image: postgres:10.4
+    ports:
+      - "35432:5432"
+    networks:
+      - batch-test-net
+    container_name: targetpostgres
+    command: postgres -N 500
+    environment:
+      - POSTGRES_USER=targetdb
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=targetdb
+
+volumes:
+  batchpostgres: {}
+  sourcepostgres: {}
+  targetpostgres: {}
+
+networks:
+  batch-test-net:
+    driver: "bridge"
