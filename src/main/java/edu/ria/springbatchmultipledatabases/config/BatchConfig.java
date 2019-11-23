@@ -2,7 +2,7 @@ package edu.ria.springbatchmultipledatabases.config;
 
 import edu.ria.springbatchmultipledatabases.mongo.model.MongoUsers;
 import edu.ria.springbatchmultipledatabases.source.model.SourceUsers;
-import edu.ria.springbatchmultipledatabases.target.model.TargetUsers;
+import edu.ria.springbatchmultipledatabases.destination.model.TargetUsers;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.*;

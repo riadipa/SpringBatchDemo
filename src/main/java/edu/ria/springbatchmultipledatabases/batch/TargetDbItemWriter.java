@@ -1,7 +1,7 @@
 package edu.ria.springbatchmultipledatabases.batch;
 
-import edu.ria.springbatchmultipledatabases.target.model.TargetUsers;
-import edu.ria.springbatchmultipledatabases.target.repository.TargetUsersRepository;
+import edu.ria.springbatchmultipledatabases.destination.model.TargetUsers;
+import edu.ria.springbatchmultipledatabases.destination.repository.TargetUsersRepository;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package edu.ria.springbatchmultipledatabases.batch;
 
 import edu.ria.springbatchmultipledatabases.source.model.SourceUsers;
-import edu.ria.springbatchmultipledatabases.target.model.TargetUsers;
+import edu.ria.springbatchmultipledatabases.destination.model.TargetUsers;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
